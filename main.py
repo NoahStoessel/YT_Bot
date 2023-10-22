@@ -8,17 +8,14 @@ import os
 import time
 from token_discord import TOKEN
 
-def download_video(url):
+def download_video(url, nr):
     yt = YouTube(url=url)
     video = yt.streams.get_highest_resolution()
-    print("Filename: ")
-    print(str(yt.streams[0].title) + ".mp4")
-    filename = str(yt.streams[0].title) + ".mp4"
-    video.download()
+    print(f"Downloadign {url} as {nr}")
+    video.download(filename=nr)
     print("Waiting 1 seconds!")
-    #time.sleep(1)
     print("Removing!")
-    os.remove(filename)
+    os.remove(nr)
 
 @bot.event
 async def on_ready():
@@ -27,7 +24,7 @@ async def on_ready():
         synced = await bot.tree.sync()
         print(f"Synced {len(synced)} commands")
     except:
-        print(e)
+        print("Something went wrong")
 @bot.tree.command(name="hello")
 async def hello(interaction: discord.Interaction):
     await interaction.response.send_message(f"Hey {interaction.user.mention} !", ephemeral=True)
@@ -35,6 +32,7 @@ async def hello(interaction: discord.Interaction):
 @bot.tree.command(name="download")
 @app_commands.describe(link = "youtube video link")
 async def download(interaction: discord.Interaction, link: str):
+    await interaction.response.defer()
+    download_video(link, str(interaction.user.id) + str(interaction.created_at.second))
     await interaction.response.send_message(f"Link is: {link}", ephemeral=True)
-    download_video(link)
 bot.run(TOKEN)
