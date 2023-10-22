@@ -34,5 +34,5 @@ async def hello(interaction: discord.Interaction):
 async def download(interaction: discord.Interaction, link: str):
     await interaction.response.defer()
     download_video(link, str(interaction.user.id) + str(interaction.created_at.second))
-    await interaction.response.send_message(f"Link is: {link}", ephemeral=True)
+    await interaction.response.edit_message(f"Link is: {link}", ephemeral=True)
 bot.run(TOKEN)
