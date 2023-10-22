@@ -2,7 +2,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 #from download import download_video
-bot = commands.Bot(command_prefix="!", intents = discord.Intents.all())
+bot = commands.Bot(command_prefix="!", intents = discord.Intents.none())
 from pytube import YouTube
 import os
 import time
